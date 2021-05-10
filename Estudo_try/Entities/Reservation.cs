@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Estudo_try.Entities.Exceptions;
 
 namespace Estudo_try.Entities
 {
@@ -16,6 +13,11 @@ namespace Estudo_try.Entities
 
         public Reservation(int roomNumber, DateTime checkIn, DateTime checkOut)
         {
+            if (checkOut <= checkIn)
+            {
+                throw new DomainException("Check-out date muste be later than check-in");
+            }
+
             RoomNumber = roomNumber;
             CheckIn = checkIn;
             CheckOut = checkOut;
@@ -41,7 +43,17 @@ namespace Estudo_try.Entities
         }
 
         public void UpdateDates(DateTime checkIn, DateTime checkOut)
-        {
+        {   
+            DateTime now = DateTime.Now;
+            if (checkIn < now || checkOut < now)
+            {
+                throw new DomainException("Reservation ddates must be future dates");
+            }
+            if (checkOut <= checkIn)
+            {
+                throw new DomainException("Check-out date muste be later than check-in");
+            }
+
             CheckIn = checkIn;
             CheckOut = checkOut;
         }
